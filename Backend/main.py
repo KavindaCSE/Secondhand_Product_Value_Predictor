@@ -1,7 +1,14 @@
 from fastapi import FastAPI
 from config.config import database
-from models.models import User,Vehicles
+from models.models import User,Vehicle,Prediction
 from fastapi.middleware.cors import CORSMiddleware 
+import pickle
+import pandas as pd
+import numpy as np
+
+with open('./Prediction/xgb_model.pkl','rb') as f:
+    model = pickle.load(f)
+
 
 app = FastAPI()
 
@@ -34,31 +41,43 @@ async def get_user(id:str):
      
 
 @app.post('/add-vehicles',tags=["vehicles"])
-async def add_vehicle(vehicle:Vehicles):
-    result = await database["vehicles"].insert_one(vehicle.dict())
+async def add_vehicle(vehicle:Vehicle):
+    result = await database["vehicle"].insert_one(vehicle.dict())
     return "success"
     
 
 @app.get('/vehicles',tags=["vehicles"])
 async def get_vehicle():
     vehicles = []
-    vehicles_cursor = database["vehicles"].find()
+    vehicles_cursor = database["vehicle"].find()
     async for  vehicle in vehicles_cursor:
-        vehicles.append(Vehicles(**vehicle))
+        vehicles.append(Vehicle(**vehicle))
 
     return vehicles
 
 @app.get('/get-vehicles-userid/{id}',tags=["vehicles"])
 async def get_vehicle_by_user_id(id:str):
     vehicles = []
-    vehicles_cursor = database["vehicles"].find({"user_id":id})
+    vehicles_cursor = database["vehicle"].find({"user_id":id})
     async for vehicle in vehicles_cursor:
-        vehicles.append(Vehicles(**vehicle))
+        vehicles.append(Vehicle(**vehicle))
 
     return vehicles    
     
-@app.post('/addvehicle',tags=["vehicles"])
-async def addNewVehicle(request:Vehicles):
-    database["vehicles"].insert_one(request.dict())
-    return "success"    
+@app.post('/prediction', tags=["Prediction"])
+async def predict_price(request: Prediction):
+    # Convert the request data to a dictionary
+    data_dict = request.dict()
+    
+    # Create a DataFrame from the input data with appropriate data types
+    input_data = pd.DataFrame([data_dict], dtype=np.float64)
+
+    # Predict the price using the model
+    try:
+        predicted_price = model.predict(input_data)
+    except Exception as e:
+        return {"error": str(e)}
+
+    # Return the predicted price
+    return {"predicted_price": float(predicted_price[0])}
 
