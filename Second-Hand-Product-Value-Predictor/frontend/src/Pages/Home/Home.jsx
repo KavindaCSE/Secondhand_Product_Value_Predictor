@@ -1,110 +1,307 @@
+import React, { useState, useEffect } from "react";
 import "../../Components/components.css";
 import "./Home.css";
 import Background from "../../Components/Background";
 import CarBrandsData from "../../Data/CarBrandsData";
+import Data from "../../Data/labelmapping";
+import tt from "../../Data/brand_to_model.json";
+import axios from "axios";
 
 function Home() {
+  const [manuModels, setManuModels] = useState([]);
+  const [unDisableModel, setUnDisableModel] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [price,setPrice] = useState(0)
+
+  const [formData, setFormData] = useState({
+    year: "",
+    manufacturer:"",
+    model:"",
+    condition:"",
+    fuel:"", 
+    odometer: "",
+    title_status:"", 
+    transmission:"", 
+    type:"", 
+    age:""
+
+  });
+
+  useEffect(() => {
+    // Check if all fields are filled
+    const allFieldsFilled = Object.values(formData).every(
+      (value) => value !== ""
+    );
+    setIsFormValid(allFieldsFilled);
+  }, [formData]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "manufacturer") {
+      if (value !== "") {
+        setUnDisableModel(true);
+        setManuModels(tt[value]);
+      } else {
+        setUnDisableModel(false);
+        setManuModels([]);
+      }
+      setFormData({ ...formData, manufacturer: value, model: "" });
+    } else if (name === "year") {
+      let year = parseInt(value) + 2000;
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const calculatedAge = currentYear - year;
+      setFormData({
+        ...formData,
+        year: value,
+        age: calculatedAge >= 0 ? calculatedAge : "",
+      });
+    } else if (name === "odometer") {
+      const intValue = parseInt(value, 10);
+      if (!isNaN(intValue)) {
+        setFormData({ ...formData, odometer: intValue });
+      }
+    } else {
+      
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let result = await axios.post("http://127.0.0.1:8000/prediction",formData)
+    setPrice(result.data)
+    
+  };
+
+  const handleAdd = async () => {
+    const newdata = {...formData}
+    newdata["userid"] = 1
+    newdata["price"] = price.toFixed(2)
+    const respond = await axios.post("http://127.0.0.1:8000/add-vehicles",newdata)
+    alert("Successfully added")
+    window.location = "/"
+  }
+
   return (
     <div className="home">
       <Background className="calculator">
         <div className="flex flex-row justify-start w-full p-1">
           <span className="topic">Used car Price Calculator</span>
         </div>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">Select Manufacturing Year</span>
-            <input type="text" className="input-field"></input>
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-row w-full">
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Brand</span>
+              <select
+                name="manufacturer"
+                value={formData.brand}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+              >
+                <option value="">Select Brand</option>
+                {Object.keys(Data.manufacturer).map((item, index) => (
+                  <option key={index} value={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Model</span>
+              <select
+                name="model"
+                value={formData.model}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+                disabled={!unDisableModel}
+              >
+                <option value="">Select Model</option>
+                {manuModels.map((item, index) => (
+                  <option key={index} value={item}>
+                    {Data.model[item]}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">Type</span>
-            <input type="text" className="input-field"></input>
+          <div className="flex flex-row w-full">
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Year</span>
+              <select
+                name="year"
+                value={formData.year}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+              >
+                <option value="">Select Year</option>
+                {Object.keys(Data.year).map((item, index) => (
+                  <option key={index} value={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Fuel</span>
+              <select
+                name="fuel"
+                value={formData.fuel}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+              >
+                <option value="">Select Fuel</option>
+                {Object.keys(Data.fuel).map((item, index) => (
+                  <option key={index} value={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">Brand</span>
-            <input type="text" className="input-field"></input>
+          <div className="flex flex-row w-full">
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Transmission</span>
+              <select
+                name="transmission"
+                value={formData.transmission}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+              >
+                <option value="">Select Transmission</option>
+                {Object.keys(Data.transmission).map((item, index) => (
+                  <option key={index} value={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Type</span>
+              <select
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+              >
+                <option value="">Select Type</option>
+                {Object.keys(Data.type).map((item, index) => (
+                  <option key={index} value={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">Model</span>
-            <input type="text" className="input-field"></input>
+          <div className="flex flex-row w-full">
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Odometer</span>
+              <input
+                type="text"
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+                name="odometer"
+                value={formData.odometer}
+              />
+            </div>
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Title Status</span>
+              <select
+                name="title_status"
+                value={formData.titleStatus}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+              >
+                <option value="">Select Title Status</option>
+                {Object.keys(Data.title_status).map((item, index) => (
+                  <option key={index} value={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">Paint Color</span>
-            <input type="text" className="input-field"></input>
+          <div className="flex flex-row w-full">
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Condition</span>
+              <select
+                name="condition"
+                value={formData.condition}
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+              >
+                <option value="">Select Condition</option>
+                {Object.keys(Data.condition).map((item, index) => (
+                  <option key={index} value={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <span className="input-name">Age</span>
+              <input
+                type="text"
+                onChange={handleChange}
+                className="input-field w-full max-w-xs truncate"
+                name="age"
+                value={formData.age}
+                readOnly
+              />
+            </div>
           </div>
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">Fuel</span>
-            <input type="text" className="input-field"></input>
-          </div>
-        </div>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">State</span>
-            <input type="text" className="input-field"></input>
-          </div>
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <span className="input-name">Mileage</span>
-            <input type="text" className="input-field"></input>
-          </div>
-        </div>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col w-6/12 p-1 mr-8">
-            <button className="p-1  bg-[#274C77] h-12 rounded-[8px]">
-              <span className="text-[#F8F8FB]">Check Your Car</span>
-            </button>
-          </div>
-          <div className="flex flex-col w-6/12 p-1 mr-8"></div>
-        </div>
-
-        <div className="flex flex-row w-full justify-center h-[200px]">
-          <div className="w-9/12 h-[200px] flex flex-col justify-end items-center p-1 gap-10">
-            <div className="flex flex-row justify-evenly w-full h-6">
-              <div className="flex flex-col justify-evenly items-center w-6/12 h-6">
-                <span className="text-[#274C77]">Fair Condition</span>
-                <span className="text-[#000000]">$ 12,500</span>
+          <div className="flex flex-row w-full">
+            <div className="flex flex-col w-6/12 p-1 mr-8">
+              <button
+                className={`p-1 bg-[#274C77] h-12 rounded-[8px] ${
+                  !isFormValid
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:cursor-pointer"
+                }`}
+                disabled={!isFormValid}
+              >
+                <span className="text-[#F8F8FB]">Check Your Car</span>
+              </button>
               </div>
-              <div className="flex flex-col justify-evenly items-center w-6/12 h-6">
-                <span className="text-[#274C77]">Good Condition</span>
-                <span className="text-[#000000]">$ 14,500</span>
-              </div>
-            </div>
-            <div className="w-10/12 h-6 flex flex-row justify-center">
-              <div className="w-[3px] h-12  bg-slate-400 rounded-lg"></div>
-              <div className="w-8/12 h-12"></div>
-              <div className="w-[3px] h-12  bg-slate-400 rounded-lg"></div>
-            </div>
-            <div className="bg-[#A5B3C7] w-10/12 h-3 rounded-[8px] flex flex-row justify-center">
-              <div className="bg-[#516F91] w-8/12 h-3 rounded-[8px]"></div>
-            </div>
+            <div className="flex flex-col w-6/12 p-1 mr-8"></div>
           </div>
-          <div className="w-3/12 h-[200px] flex flex-row justify-end items-end p-1">
-            <button className="absolute p-[15px] rounded-[8px] bg-[#EB8383] mr-8">
-              <span className="text-[#F8F8FB] m-2">List Your Item</span>
-            </button>
-          </div>
+        </form>
+        <button
+                className={`p-1 bg-[#274C77] h-12 rounded-[8px] ${
+                  !price
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:cursor-pointer"
+                }`}
+                onClick={handleAdd}
+              >
+                <span className="text-[#F8F8FB]">Adding for Sell</span>
+        </button>
+        <div className="flex flex-row w-full justify-center items-center h-[200px]">
+          <h1 className="text-xl font-bold">Estimated Price = </h1>
+          <span className="text-xl font-semibold text-green-600 ml-2">
+            {/* Estimated price will be dynamically updated here */}
+            {price.toFixed(2)} $
+          </span>
         </div>
       </Background>
+      {/* Top Brands Section */}
       <div className="notifications-brands gap-[20px]">
         <Background className="top-brands w-full h-full">
           <div className="flex flex-row justify-start w-full p-1">
             <span className="topic">Top Brands</span>
           </div>
           <div className="flex flex-col w-full justify-start p-1 gap-3">
-            {CarBrandsData.map((item, index) => {
-              return (
-                <div key={index} className="brand-card">
-                  {/* <item.icon className="icon" /> */}
-                  <span>{item.title}</span>
-                </div>
-              );
-            })}
+            {CarBrandsData.map((item, index) => (
+              <div key={index} className="brand-card">
+                <span>{item.title}</span>
+              </div>
+            ))}
           </div>
         </Background>
       </div>
     </div>
   );
 }
+
 export default Home;

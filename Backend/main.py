@@ -42,7 +42,10 @@ async def get_user(id:str):
 
 @app.post('/add-vehicles',tags=["vehicles"])
 async def add_vehicle(vehicle:Vehicle):
-    result = await database["vehicle"].insert_one(vehicle.dict())
+    try:
+        result = await database["vehicle"].insert_one(vehicle.dict())
+    except Exception as e:
+        return {"error": str(e)}
     return "success"
     
 
@@ -79,5 +82,5 @@ async def predict_price(request: Prediction):
         return {"error": str(e)}
 
     # Return the predicted price
-    return {"predicted_price": float(predicted_price[0])}
+    return float(predicted_price[0])   
 
