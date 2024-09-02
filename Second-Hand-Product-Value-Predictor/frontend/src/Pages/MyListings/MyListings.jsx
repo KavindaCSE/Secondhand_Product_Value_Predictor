@@ -2,7 +2,6 @@ import React,{useState,useEffect} from "react";
 import "./MyListings.css";
 import Background from "../../Components/Background";
 import Advertisement from "../../Components/Advertisement";
-import AdvertisementData from "../../Data/AdvertisementData";
 import image from "../../assets/car.png";
 import axios from 'axios';
 
