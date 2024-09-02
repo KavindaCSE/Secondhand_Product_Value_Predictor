@@ -11,7 +11,7 @@ function MyListings() {
 
   let[listOfCars,setlistOfCars] = useState([])
   
-  let id  = '01234'
+  let id  = 1
 
 
   useEffect(() => {
@@ -21,10 +21,12 @@ function MyListings() {
       setlistOfCars(listOfCars)
     }
 
+    
     fetchData()
-
+    
   },[])
 
+  
 
   return (
     <div className="browsecar">
@@ -47,8 +49,8 @@ function MyListings() {
               model={ad.model}
               year={ad.year}
               price={ad.price}
-              location={ad.location}
-              mileage={ad.mileage}
+              title_status={ad.title_status}
+              odometer={ad.odometer}
               fuel={ad.fuel}
               image={image}
               sellerDetails={ad.sellerDetails}

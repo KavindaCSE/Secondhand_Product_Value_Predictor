@@ -4,18 +4,20 @@ import Background from "./Background";
 // import { useState } from "react";
 
 export default function Advertisement({
-  brand,
-  model,
-  year,
-  price,
-  location,
-  mileage,
-  fuel,
-  image,
-  onSellerDetails,
-  browseCars,
-}) {
+    brand,
+    model,
+    year,
+    price,
+    title_status,
+    odometer,
+    fuel,
+    image,
+    onSellerDetails,
+    browseCars
+}) 
 
+{
+  
   let handleClick = () => {
     console.log("Sold")
   }
@@ -25,7 +27,7 @@ export default function Advertisement({
       <img src={image} alt="Car" />
       <div className="details">
         <div className="car-name">{`${year} ${brand} ${model}`}</div>
-        <p className="car-features">{`${mileage} | ${fuel} | ${location}`}</p>
+        <p className="car-features">{`${odometer} | ${fuel} | ${title_status}`}</p>
         <div className="car-price">${price}</div>
       </div>
       {browseCars ? (

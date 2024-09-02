@@ -59,9 +59,9 @@ async def get_vehicle():
     return vehicles
 
 @app.get('/get-vehicles-userid/{id}',tags=["vehicles"])
-async def get_vehicle_by_user_id(id:str):
+async def get_vehicle_by_user_id(id:int):
     vehicles = []
-    vehicles_cursor = database["vehicle"].find({"user_id":id})
+    vehicles_cursor = database["vehicle"].find({"userid":id})
     async for vehicle in vehicles_cursor:
         vehicles.append(Vehicle(**vehicle))
 

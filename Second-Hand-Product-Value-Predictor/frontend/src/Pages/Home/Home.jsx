@@ -26,6 +26,20 @@ function Home() {
     age:""
 
   });
+  const [newVehicle, setnewVehicle] = useState({
+    year: "",
+    manufacturer:"",
+    model:"",
+    condition:"",
+    fuel:"", 
+    odometer: "",
+    title_status:"", 
+    transmission:"", 
+    type:"", 
+    age:"",
+
+
+  });
 
   useEffect(() => {
     // Check if all fields are filled
@@ -36,7 +50,21 @@ function Home() {
   }, [formData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    
+    let parsedValue,item,index;
+    if (name === "model"){
+      
+      parsedValue = JSON.parse(value);
+      item = Data.model[parsedValue.item]
+      value = parsedValue.index
+      
+    }else if (name !== "odometer") {
+      parsedValue = JSON.parse(value);
+      item = parsedValue.item
+      value = parsedValue.index
+    }
+
 
     if (name === "manufacturer") {
       if (value !== "") {
@@ -47,6 +75,7 @@ function Home() {
         setManuModels([]);
       }
       setFormData({ ...formData, manufacturer: value, model: "" });
+      setnewVehicle({...newVehicle, manufacturer: item})
     } else if (name === "year") {
       let year = parseInt(value) + 2000;
       const today = new Date();
@@ -57,14 +86,21 @@ function Home() {
         year: value,
         age: calculatedAge >= 0 ? calculatedAge : "",
       });
+      setnewVehicle({
+        ...newVehicle,
+        year: item,
+        age: calculatedAge >= 0 ? calculatedAge : "",
+      })
     } else if (name === "odometer") {
-      const intValue = parseInt(value, 10);
-      if (!isNaN(intValue)) {
-        setFormData({ ...formData, odometer: intValue });
+      const intvalue = parseInt(value, 10);
+      if (!isNaN(intvalue)) {
+        setFormData({ ...formData, odometer: intvalue });
+        setnewVehicle({ ...newVehicle, odometer: intvalue });
       }
     } else {
       
       setFormData({ ...formData, [name]: value });
+      setnewVehicle({ ...newVehicle, [name]: item });
     }
   };
 
@@ -76,9 +112,10 @@ function Home() {
   };
 
   const handleAdd = async () => {
-    const newdata = {...formData}
+    const newdata = {...newVehicle}
     newdata["userid"] = 1
     newdata["price"] = price.toFixed(2)
+    
     const respond = await axios.post("http://127.0.0.1:8000/add-vehicles",newdata)
     alert("Successfully added")
     window.location = "/"
@@ -96,13 +133,12 @@ function Home() {
               <span className="input-name">Brand</span>
               <select
                 name="manufacturer"
-                value={formData.brand}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
               >
                 <option value="">Select Brand</option>
                 {Object.keys(Data.manufacturer).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {item}
                   </option>
                 ))}
@@ -112,14 +148,13 @@ function Home() {
               <span className="input-name">Model</span>
               <select
                 name="model"
-                value={formData.model}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
                 disabled={!unDisableModel}
               >
                 <option value="">Select Model</option>
                 {manuModels.map((item, index) => (
-                  <option key={index} value={item}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {Data.model[item]}
                   </option>
                 ))}
@@ -131,13 +166,12 @@ function Home() {
               <span className="input-name">Year</span>
               <select
                 name="year"
-                value={formData.year}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
               >
                 <option value="">Select Year</option>
                 {Object.keys(Data.year).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {item}
                   </option>
                 ))}
@@ -147,13 +181,12 @@ function Home() {
               <span className="input-name">Fuel</span>
               <select
                 name="fuel"
-                value={formData.fuel}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
               >
                 <option value="">Select Fuel</option>
                 {Object.keys(Data.fuel).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {item}
                   </option>
                 ))}
@@ -165,13 +198,12 @@ function Home() {
               <span className="input-name">Transmission</span>
               <select
                 name="transmission"
-                value={formData.transmission}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
               >
                 <option value="">Select Transmission</option>
                 {Object.keys(Data.transmission).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {item}
                   </option>
                 ))}
@@ -181,13 +213,12 @@ function Home() {
               <span className="input-name">Type</span>
               <select
                 name="type"
-                value={formData.type}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
               >
                 <option value="">Select Type</option>
                 {Object.keys(Data.type).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {item}
                   </option>
                 ))}
@@ -209,13 +240,12 @@ function Home() {
               <span className="input-name">Title Status</span>
               <select
                 name="title_status"
-                value={formData.titleStatus}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
               >
                 <option value="">Select Title Status</option>
                 {Object.keys(Data.title_status).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {item}
                   </option>
                 ))}
@@ -227,13 +257,12 @@ function Home() {
               <span className="input-name">Condition</span>
               <select
                 name="condition"
-                value={formData.condition}
                 onChange={handleChange}
                 className="input-field w-full max-w-xs truncate"
               >
                 <option value="">Select Condition</option>
                 {Object.keys(Data.condition).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={JSON.stringify({ item, index })}>
                     {item}
                   </option>
                 ))}

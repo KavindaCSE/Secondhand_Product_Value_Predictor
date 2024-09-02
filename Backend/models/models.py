@@ -9,18 +9,18 @@ class User(BaseModel):
 'year', 'manufacturer', 'model', 'condition', 'fuel', 'title_status', 'transmission', 'type'
 
 class Vehicle(BaseModel):
-    year:int
-    manufacturer:int
-    model:int
-    condition:int
-    fuel:int
+    year:str
+    manufacturer:str
+    model:str
+    condition:str
+    fuel:str
     odometer: int
-    title_status:int
-    transmission:int
-    type:int
+    title_status:str
+    transmission:str
+    type:str
     age: int
     userid:int
-    price:float
+    price:str
 
 class Prediction(BaseModel):
     year: int

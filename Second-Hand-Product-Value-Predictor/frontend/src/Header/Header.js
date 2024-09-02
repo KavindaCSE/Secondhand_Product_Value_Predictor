@@ -3,9 +3,6 @@ import "./Header.css";
 import { Link } from "react-router-dom";
 
 function Header({ onAuthentication, onLogout }) {
-  // const handleLogout = () => {
-  //   console.log("Logout");
-  // };
 
   return (
     <header className="Header">

@@ -47,12 +47,12 @@ function BrowseCars() {
           {listOfCars.map((ad) => (
             <Advertisement
               key={ad.id}
-              brand={ad.brand}
+              brand={ad.manufacturer}
               model={ad.model}
               year={ad.year}
               price={ad.price}
-              location={ad.location}
-              mileage={ad.mileage}
+              title_status={ad.title_status}
+              odometer={ad.odometer}
               fuel={ad.fuel}
               image={image}
               onSellerDetails={() => fetchSeller(ad.user_id)}
