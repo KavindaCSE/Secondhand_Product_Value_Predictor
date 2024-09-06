@@ -24,9 +24,9 @@ const SideBarData = [
     path: "/myaccount",
   },
   {
-    title: "Support",
+    title: "About Us",
     icon: { MdOutlineLightbulb },
-    path: "/support",
+    path: "/aboutus",
   },
 ];
 

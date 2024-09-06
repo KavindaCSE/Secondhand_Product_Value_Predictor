@@ -1,28 +1,50 @@
 import React from "react";
-import "./Header.css";
 import { Link } from "react-router-dom";
 
 function Header({ onAuthentication, onLogout }) {
-
   return (
-    <header className="Header">
+    <header className="flex justify-between items-center bg-gray-100 py-4 px-8 shadow-lg fixed w-full z-50">
       <div className="company_name">
-        <span>Second Hand Product Value Predictor</span>
+        <Link to="/">
+          <span className="text-[#274C77] text-2xl font-bold">
+            Second Hand Product Value Predictor
+          </span>
+        </Link>
       </div>
-      <div className="profile_details">
-        {onAuthentication && (
+      <div className="profile_details flex items-center gap-4">
+        {onAuthentication ? (
           <>
-            <span>
-              <img src="assets/images.jpeg" alt="" />
-            </span>
-            <span>My Account</span>
-            <button onClick={onLogout}>Logout</button>
+            {/* <span>
+              <img
+                src="assets/images.jpeg"
+                alt=""
+                className="w-10 h-10 rounded-full"
+              />
+            </span> */}
+            <Link to="/myaccount">
+              <span className="text-[#274C77] text-sm">My Account</span>
+            </Link>
+
+            <button onClick={onLogout} className="px-4 py-2" id="logout">
+              <span className="font-bold text-red-600 hover:text-red-800 drop-shadow-md">
+                Logout
+              </span>
+            </button>
           </>
-        )}
-        {!onAuthentication && (
+        ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">SignUp</Link>
+            <Link
+              to="/login"
+              className="text-[#274C77] hover:text-[#F3F4F6] px-4 py-2 rounded hover:bg-[#274C77]"
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              className="text-[#274C77] hover:text-[#F3F4F6] px-4 py-2 rounded hover:bg-[#274C77]"
+            >
+              SignUp
+            </Link>
           </>
         )}
       </div>

@@ -122,15 +122,21 @@ function Home() {
   }
 
   return (
-    <div className="home">
-      <Background className="calculator">
+    <div className="flex flex-row justify-center items-start w-full h-max gap-[20px]">
+      <Background className="flex flex-col justify-center items-center w-full h-full gap-[10px] p-6 rounded-lg shadow-lg bg-white">
         <div className="flex flex-row justify-start w-full p-1">
-          <span className="topic">Used car Price Calculator</span>
+          <span className="font-lato text-[#274c77] text-[22px] font-bold">
+            Used Car Price Calculator
+          </span>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-row w-full">
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Brand</span>
+        <div className="flex flex-row w-full">
+            <div className="flex flex-col w-6/12 p-2 justify-start items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Brand
+                </span>
+              </div>
               <select
                 name="manufacturer"
                 onChange={handleChange}
@@ -144,8 +150,12 @@ function Home() {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Model</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Model
+                </span>
+              </div>
               <select
                 name="model"
                 onChange={handleChange}
@@ -162,8 +172,12 @@ function Home() {
             </div>
           </div>
           <div className="flex flex-row w-full">
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Year</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Year
+                </span>
+              </div>
               <select
                 name="year"
                 onChange={handleChange}
@@ -177,8 +191,12 @@ function Home() {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Fuel</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Fuel
+                </span>
+              </div>
               <select
                 name="fuel"
                 onChange={handleChange}
@@ -194,8 +212,12 @@ function Home() {
             </div>
           </div>
           <div className="flex flex-row w-full">
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Transmission</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Transmission
+                </span>
+              </div>
               <select
                 name="transmission"
                 onChange={handleChange}
@@ -209,8 +231,12 @@ function Home() {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Type</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Type
+                </span>
+              </div>
               <select
                 name="type"
                 onChange={handleChange}
@@ -226,8 +252,12 @@ function Home() {
             </div>
           </div>
           <div className="flex flex-row w-full">
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Odometer</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Odometer
+                </span>
+              </div>
               <input
                 type="text"
                 onChange={handleChange}
@@ -236,8 +266,12 @@ function Home() {
                 value={formData.odometer}
               />
             </div>
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Title Status</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Title Status
+                </span>
+              </div>
               <select
                 name="title_status"
                 onChange={handleChange}
@@ -253,8 +287,12 @@ function Home() {
             </div>
           </div>
           <div className="flex flex-row w-full">
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Condition</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Condition
+                </span>
+              </div>
               <select
                 name="condition"
                 onChange={handleChange}
@@ -268,8 +306,12 @@ function Home() {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col w-6/12 p-1 mr-8">
-              <span className="input-name">Age</span>
+            <div className="flex flex-col w-6/12 p-2 justify-center items-center">
+              <div className="flex flex-col justify-start items-start max-w-[350px] w-full">
+                <span className="text-black font-lato text-[15.16px] font-light">
+                  Age
+                </span>
+              </div>
               <input
                 type="text"
                 onChange={handleChange}
@@ -315,15 +357,25 @@ function Home() {
         </div>
       </Background>
       {/* Top Brands Section */}
-      <div className="notifications-brands gap-[20px]">
-        <Background className="top-brands w-full h-full">
+      <div className="flex flex-col justify-start items-center w-4/12 gap-[20px] h-full">
+        <Background className="w-full h-full p-6 rounded-lg shadow-lg bg-white">
           <div className="flex flex-row justify-start w-full p-1">
-            <span className="topic">Top Brands</span>
+            <span className="font-lato text-[#274c77] text-[18.16px] font-bold">
+              Top Brands
+            </span>
           </div>
           <div className="flex flex-col w-full justify-start p-1 gap-3">
             {CarBrandsData.map((item, index) => (
-              <div key={index} className="brand-card">
+              <div
+                key={index}
+                className="rounded-lg py-1 px-3 shadow-sm w-full flex flex-row justify-between items-center "
+              >
                 <span>{item.title}</span>
+                <img
+                  className="w-[50px] h-[50px]"
+                  src={item.icon}
+                  alt={item.title}
+                />
               </div>
             ))}
           </div>
