@@ -1,5 +1,9 @@
 from pydantic import BaseModel
 
+class Credentials(BaseModel):
+    email:str
+    password:str
+
 class NewUser(BaseModel):
     id : int
     firstname:str
@@ -40,6 +44,11 @@ class Prediction(BaseModel):
     type:int 
     age:int
     
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
     
     
     

@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+from jwt_auth.jwt import create_access_token
 from config.config import database
-from models.models import User,Vehicle,Prediction,NewUser
+from models.models import User,Vehicle,Prediction,NewUser,Credentials,Token
 from fastapi.middleware.cors import CORSMiddleware 
 import pickle
+from passlib.context import CryptContext
 import pandas as pd
 import numpy as np
 
@@ -25,11 +27,25 @@ app.add_middleware(
     allow_headers = ["*"]
 )
 
+pwd_cxt = CryptContext(schemes=["bcrypt"],deprecated="auto")
 
 @app.post('/add-user',tags=["user"])
 async def add_user(user: NewUser):
-    result = database["users"].insert_one(user.dict())
+    hashed_pw = pwd_cxt.hash(user.password)
+    user = user.dict()
+    user["password"] = hashed_pw
+    result = database["users"].insert_one(user)
     return "success"
+
+@app.post('/login',tags=["user"])
+async def login(request:Credentials):
+    user = database["users"].find_one({"email":request.email})
+    if not pwd_cxt.verify(request.password,user["password"]):
+        return "invalid password"
+    
+    access_token = create_access_token(
+        data={"sub": user["email"]})
+    return Token(access_token=access_token, token_type="bearer")
 
 
 @app.get('/get_user/{id}',tags=["user"])
