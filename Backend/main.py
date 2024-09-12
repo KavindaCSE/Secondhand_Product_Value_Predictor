@@ -28,22 +28,20 @@ app.add_middleware(
 
 @app.post('/add-user',tags=["user"])
 async def add_user(user: User):
-    result = await database["users"].insert_one(user.dict())
+    result = database["users"].insert_one(user.dict())
     return "success"
 
 
 @app.get('/get_user/{id}',tags=["user"])
-async def get_user(id:str):
-    user = await database["users"].find_one({"id": id})
-    if user:
-        user['id'] = str(user['_id'])  # Convert ObjectId to string
-        return User(**user)
-     
+async def get_user(id:int):
+    user = database["users"].find_one({"id":id})
+    return User(**user)
+
 
 @app.post('/add-vehicles',tags=["vehicles"])
 async def add_vehicle(vehicle:Vehicle):
     try:
-        result = await database["vehicle"].insert_one(vehicle.dict())
+        result = database["vehicle"].insert_one(vehicle.dict())
     except Exception as e:
         return {"error": str(e)}
     return "success"
@@ -53,7 +51,7 @@ async def add_vehicle(vehicle:Vehicle):
 async def get_vehicle():
     vehicles = []
     vehicles_cursor = database["vehicle"].find()
-    async for  vehicle in vehicles_cursor:
+    for  vehicle in vehicles_cursor:
         vehicles.append(Vehicle(**vehicle))
 
     return vehicles
@@ -62,7 +60,7 @@ async def get_vehicle():
 async def get_vehicle_by_user_id(id:int):
     vehicles = []
     vehicles_cursor = database["vehicle"].find({"userid":id})
-    async for vehicle in vehicles_cursor:
+    for vehicle in vehicles_cursor:
         vehicles.append(Vehicle(**vehicle))
 
     return vehicles    
