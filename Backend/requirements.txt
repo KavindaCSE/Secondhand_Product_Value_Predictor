@@ -16,6 +16,7 @@ pydantic_core==2.20.1
 pymango==0.1.1
 pymongo==4.8.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 pytz==2024.1
 requests==2.32.3
 scipy==1.14.1

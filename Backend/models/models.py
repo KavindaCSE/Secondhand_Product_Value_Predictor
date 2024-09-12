@@ -1,12 +1,18 @@
 from pydantic import BaseModel
 
+class NewUser(BaseModel):
+    id : int
+    firstname:str
+    lastname:str
+    email:str 
+    password:str 
+
 class User(BaseModel):
     id : int
     firstname:str
     lastname:str
     email:str   
 
-'year', 'manufacturer', 'model', 'condition', 'fuel', 'title_status', 'transmission', 'type'
 
 class Vehicle(BaseModel):
     year:str

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from config.config import database
-from models.models import User,Vehicle,Prediction
+from models.models import User,Vehicle,Prediction,NewUser
 from fastapi.middleware.cors import CORSMiddleware 
 import pickle
 import pandas as pd
@@ -27,7 +27,7 @@ app.add_middleware(
 
 
 @app.post('/add-user',tags=["user"])
-async def add_user(user: User):
+async def add_user(user: NewUser):
     result = database["users"].insert_one(user.dict())
     return "success"
 

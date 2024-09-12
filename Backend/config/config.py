@@ -1,9 +1,13 @@
 import os
+from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
+load_dotenv()
+
 mongo_user = os.getenv('MONGO_USER')
 mongo_pass = os.getenv('MONGO_PASS')
+
 
 url = f"mongodb+srv://{mongo_user}:{mongo_pass}@cluster0.jsp7h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # Create a new client and connect to the server
