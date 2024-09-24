@@ -42,7 +42,7 @@ async def login(request:Credentials):
     user = database["users"].find_one({"email":request.email})
     if not pwd_cxt.verify(request.password,user["password"]):
         return "invalid password"
-    
+    # print("success")
     access_token = create_access_token(
         data={"sub": user["email"]})
     return Token(access_token=access_token, token_type="bearer")

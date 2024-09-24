@@ -14,35 +14,34 @@ import FirstSignIn from "./Pages/firstsigninpage";
 import NewCar from "./Components/NewCar";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation();
 
   const handleLogin = () => {
-    setIsAuthenticated(true);
+    if (localStorage.getItem("userName")) {
+      setIsAuthenticated(true);
+    }
   };
 
   const handleLogout = () => {
+    localStorage.clear();
     setIsAuthenticated(false);
   };
 
-  const hideSidebar =
-    location.pathname === "/login" || location.pathname === "/signup";
+  const hideSidebar = location.pathname === "/login" || location.pathname === "/signup";
+  
+  console.log(isAuthenticated);
 
   return (
     <>
-      <Header
-        onAuthentication={isAuthenticated}
-        onLogout={handleLogout}
-      ></Header>
+      <Header onAuthentication={isAuthenticated} onLogout={handleLogout} />
       <div className="layout">
         {!hideSidebar && (
           <div className="sidebar-dev">
             <SideBar />
           </div>
         )}
-        <div
-          className={`main-content ${isAuthenticated ? "with-sidebar" : ""}`}
-        >
+        <div className={`main-content ${isAuthenticated ? "with-sidebar" : ""}`}>
           <Routes>
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignUp onSignUp={handleLogin} />} />
