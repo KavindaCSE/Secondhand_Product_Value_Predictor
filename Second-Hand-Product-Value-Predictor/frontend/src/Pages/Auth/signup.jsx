@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  const handleSubmit = (e) => {};
+
+  let {user,setUser} = useState({id:0,fullname:"",email:"",password:""})
+
+  const handleSubmit = (e) => {
+
+
+  };
+
+  const handleChange = (e) => {
+
+  }
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -11,7 +21,7 @@ const SignUp = () => {
           Create an Account
         </h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-5 text-left">
+        <div className="mb-5 text-left">
             <label htmlFor="name" className="block mb-2 text-blue-900">
               Full Name
             </label>
@@ -19,6 +29,22 @@ const SignUp = () => {
               type="text"
               id="name"
               name="name"
+              value={user.fullname}
+              onChange={handleChange}
+              required
+              className="w-full p-3 border border-gray-300 rounded"
+            />
+          </div>          
+          <div className="mb-5 text-left">
+            <label htmlFor="name" className="block mb-2 text-blue-900">
+              ID NO
+            </label>
+            <input
+              type="integers"
+              id="id"
+              name="id"
+              value={user.id}
+              onChange={handleChange}
               required
               className="w-full p-3 border border-gray-300 rounded"
             />
@@ -31,6 +57,8 @@ const SignUp = () => {
               type="email"
               id="email"
               name="email"
+              value={user.email}
+              onChange={handleChange}
               required
               className="w-full p-3 border border-gray-300 rounded"
             />
@@ -43,11 +71,13 @@ const SignUp = () => {
               type="password"
               id="password"
               name="password"
+              value={user.password}
+              onChange={handleChange}
               required
               className="w-full p-3 border border-gray-300 rounded"
             />
           </div>
-          <div className="mb-5 text-left">
+          {/* <div className="mb-5 text-left">
             <label
               htmlFor="confirmPassword"
               className="block mb-2 text-blue-900"
@@ -61,7 +91,7 @@ const SignUp = () => {
               required
               className="w-full p-3 border border-gray-300 rounded"
             />
-          </div>
+          </div> */}
           <button
             type="submit"
             className="bg-blue-900 text-white py-3 px-6 rounded w-full text-lg hover:bg-blue-800"

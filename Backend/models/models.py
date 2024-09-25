@@ -6,15 +6,13 @@ class Credentials(BaseModel):
 
 class NewUser(BaseModel):
     id : int
-    firstname:str
-    lastname:str
+    fullname:str
     email:str 
     password:str 
 
 class User(BaseModel):
     id : int
-    firstname:str
-    lastname:str
+    fullname:str
     email:str   
 
 
