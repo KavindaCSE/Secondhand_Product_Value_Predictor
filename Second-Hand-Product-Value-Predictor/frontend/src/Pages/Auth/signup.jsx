@@ -6,7 +6,7 @@ const SignUp = () => {
   let {user,setUser} = useState({id:0,fullname:"",email:"",password:""})
 
   const handleSubmit = (e) => {
-
+    e.preventDefault();
 
   };
 
