@@ -48,9 +48,9 @@ async def login(request:Credentials):
     return Token(access_token=access_token, token_type="bearer")
 
 
-@app.get('/get_user/{id}',tags=["user"])
-async def get_user(id:int):
-    user = database["users"].find_one({"id":id})
+@app.get('/get_user/{email}',tags=["user"])
+async def get_user(email:str):
+    user = database["users"].find_one({"email":email})
     return User(**user)
 
 
