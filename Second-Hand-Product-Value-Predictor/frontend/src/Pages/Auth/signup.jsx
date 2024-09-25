@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import axios from 'axios';
 
-const SignUp = () => {
+function SignUp(props){
 
-  let {user,setUser} = useState({id:0,fullname:"",email:"",password:""})
+  let [user,setUser] = useState({id:0,fullname:"",email:"",password:""})
+  let navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    await axios.post("http://127.0.0.1:8000/add-user",user)
+    localStorage.setItem("userName",user.email)
+    props.onSignUp()
+    alert("Successfully Sing In")
+    navigate('/')
 
   };
 
   const handleChange = (e) => {
-
+    setUser({...user,[e.target.name]:e.target.value})
   }
 
   return (
@@ -28,7 +35,7 @@ const SignUp = () => {
             <input
               type="text"
               id="name"
-              name="name"
+              name="fullname"
               value={user.fullname}
               onChange={handleChange}
               required

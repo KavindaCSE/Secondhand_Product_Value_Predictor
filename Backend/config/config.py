@@ -8,7 +8,6 @@ load_dotenv()
 mongo_user = os.getenv('MONGO_USER')
 mongo_pass = os.getenv('MONGO_PASS')
 
-
 url = f"mongodb+srv://{mongo_user}:{mongo_pass}@cluster0.jsp7h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # Create a new client and connect to the server
 client = MongoClient(url, server_api=ServerApi('1'))
