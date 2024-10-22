@@ -7,12 +7,13 @@ export default function AdvertisementListing({
   model,
   year,
   price,
-  location,
-  mileage,
+  odometer,
   fuel,
   image,
   sold: initialSold,
   onDelete,
+  type,
+  transmission,
 }) {
   const [sold, setSold] = useState(initialSold);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -44,14 +45,16 @@ export default function AdvertisementListing({
         />
 
         <div className="details">
-          <div className="car-name">{`${year} ${brand} ${model}`}</div>
-          <p className="car-features">{`${mileage} | ${fuel} | ${location}`}</p>
-          <div className="car-price">${price}</div>
+          <div className="car-name">{`${year} ${brand} ${model} ${type}`}</div>
+          <p className="car-features">{`${odometer} | ${fuel} | ${transmission}`}</p>
+          <div className="car-price">Rs.{price}</div>
         </div>
 
         <div className="w-full px-4 py-2 flex gap-2">
           <button
-            className="btn sold-btn"
+            className={`btn sold-btn px-1 rounded ${
+              sold ? "bg-orange-500 " : "bg-green-500"
+            }`}
             onClick={toggleSoldStatus}
             data-testid="toggle-sold"
           >
@@ -59,7 +62,7 @@ export default function AdvertisementListing({
           </button>
 
           <button
-            className="btn delete-btn"
+            className="btn delete-btn bg-red-500 rounded px-1"
             onClick={handleDelete}
             data-testid="delete-btn"
           >

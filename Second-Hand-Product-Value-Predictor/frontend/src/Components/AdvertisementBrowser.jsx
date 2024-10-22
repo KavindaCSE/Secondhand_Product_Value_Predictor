@@ -7,11 +7,12 @@ export default function AdvertisementBrowser({
   model,
   year,
   price,
-  location,
-  mileage,
+  odometer,
   fuel,
   image,
-  onSellerDetails,
+  type,
+  sellerId,
+  transmission,
 }) {
   return (
     <Background className="advertisement bg-gray-200">
@@ -22,13 +23,13 @@ export default function AdvertisementBrowser({
       />
 
       <div className="details">
-        <div className="car-name">{`${year} ${brand} ${model}`}</div>
-        <p className="car-features">{`${mileage} | ${fuel} | ${location}`}</p>
-        <div className="car-price">${price}</div>
+        <div className="car-name">{`${year} ${brand} ${model} ${type}`}</div>
+        <p className="car-features">{`${odometer} | ${fuel} | ${transmission}`}</p>
+        <div className="car-price">Rs.{price}</div>
       </div>
 
       <div className="w-full px-4 py-2">
-        <button className="cont-seller-but" onClick={onSellerDetails}>
+        <button className="cont-seller-but" onClick={sellerId}>
           Contact Seller
         </button>
       </div>

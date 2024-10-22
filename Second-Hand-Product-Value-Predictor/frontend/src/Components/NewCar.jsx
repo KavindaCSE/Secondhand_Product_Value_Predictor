@@ -15,6 +15,7 @@ function NewCar({ showMyListings }) {
     image: null,
     price: "",
     sellerId: "",
+    sold: false,
   });
 
   const [manuModels, setManuModels] = useState([]);
@@ -232,7 +233,7 @@ function NewCar({ showMyListings }) {
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:bg-[#1B3A5A] hover:cursor-pointer"
               }`}
-              disabled={!isFormValid}
+              disabled={isFormValid}
             >
               List Your Car
             </button>

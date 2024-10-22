@@ -92,7 +92,6 @@ function BrowseCars() {
             onChange={handleItemsPerPageChange}
             className="rounded-lg border border-[#274c7778] px-3 py-1"
           >
-            <option value="4">4</option>
             <option value="8">8</option>
             <option value="12">12</option>
             <option value="16">16</option>
@@ -109,11 +108,13 @@ function BrowseCars() {
                 model={ad.model}
                 year={ad.year}
                 price={ad.price}
-                location={ad.location}
+                odometer={ad.odometer}
                 mileage={ad.mileage}
                 fuel={ad.fuel}
                 image={ad.image}
-                onSellerDetails={() => fetchSeller(ad.sellerDetails)}
+                type={ad.type}
+                sellerId={() => fetchSeller(ad.sellerId)}
+                transmission={ad.transmission}
               />
             ))
           ) : (
@@ -154,7 +155,6 @@ function BrowseCars() {
       {isModalVisible && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white w-1/3 p-6 rounded-md relative">
-            {/* Close Button */}
             <button
               onClick={handleCloseModal}
               className="absolute top-2 right-4 text-red-600 hover:text-red-900 text-2xl"

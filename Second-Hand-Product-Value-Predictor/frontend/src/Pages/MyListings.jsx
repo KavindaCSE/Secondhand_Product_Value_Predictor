@@ -109,11 +109,13 @@ function MyListings() {
                     model={ad.model}
                     year={ad.year}
                     price={ad.price}
-                    location={ad.location}
-                    mileage={ad.mileage}
+                    odometer={ad.odometer}
                     fuel={ad.fuel}
                     image={ad.image}
                     sold={ad.sold}
+                    type={ad.type}
+                    sellerId={ad.sellerId}
+                    transmission={ad.transmission}
                   />
                 ))
               ) : (
