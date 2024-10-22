@@ -7,6 +7,9 @@ import mercedes from "../assets/mercedes.svg";
 import porsche from "../assets/porsche.svg";
 import volkswagen from "../assets/volkswagen.svg";
 
+import { FiHome } from "react-icons/fi";
+import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
+import { MdOutlineLightbulb } from "react-icons/md";
 
 const CarBrandsData = [
   {
