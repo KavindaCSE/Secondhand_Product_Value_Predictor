@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Background from "./Background";
 import Data from "../Data/labelmapping";
-import tt from "../Data/brand_to_model.json";
+import brand_to_model from "../Data/brand_to_model.json";
 
 function NewCar({ showMyListings }) {
   const [formData, setFormData] = useState({
@@ -10,12 +10,11 @@ function NewCar({ showMyListings }) {
     year: "",
     transmission: "",
     odometer: "",
-    condition: "",
     fuel: "",
     type: "",
-    titleStatus: "",
-    age: "",
     image: null,
+    price: "",
+    sellerId: "",
   });
 
   const [manuModels, setManuModels] = useState([]);
@@ -29,7 +28,7 @@ function NewCar({ showMyListings }) {
     if (name === "brand") {
       if (value !== "") {
         setUnDisableModel(true);
-        setManuModels(tt[value]);
+        setManuModels(brand_to_model[value]);
       } else {
         setUnDisableModel(false);
         setManuModels([]);
@@ -216,46 +215,13 @@ function NewCar({ showMyListings }) {
               />
             </div>
             <div className="flex flex-col">
-              <label className="input-name">Title Status</label>
-              <select
-                name="titleStatus"
-                value={formData.titleStatus}
-                onChange={handleChange}
-                className="rounded-lg  h-[35px] border border-[#274c7778] px-3 w-full max-w-xs truncate"
-              >
-                <option value="">Select Title Status</option>
-                {Object.keys(Data.title_status).map((item, index) => (
-                  <option key={index} value={index}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label className="input-name">Condition</label>
-              <select
-                name="condition"
-                value={formData.condition}
-                onChange={handleChange}
-                className="rounded-lg  h-[35px] border border-[#274c7778] px-3 w-full max-w-xs truncate"
-              >
-                <option value="">Select Condition</option>
-                {Object.keys(Data.condition).map((item, index) => (
-                  <option key={index} value={index}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label className="input-name">Age</label>
+              <label className="input-name">price</label>
               <input
                 type="text"
                 onChange={handleChange}
                 className="rounded-lg  h-[35px] border border-[#274c7778] px-3 w-full max-w-xs truncate"
-                name="age"
-                value={formData.age}
-                readOnly
+                name="price"
+                value={formData.price}
               />
             </div>
           </div>
