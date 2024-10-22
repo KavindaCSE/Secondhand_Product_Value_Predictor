@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Background from "../../Components/Background";
-import image from "../../assets/images.jpeg";
+import Background from "../Components/Background";
+import image from "../assets/images.jpeg";
 
 function MyAccount() {
   const [selectedImage, setSelectedImage] = useState(image);
@@ -14,8 +14,8 @@ function MyAccount() {
   };
 
   return (
-    <div className="flex flex-row gap-[20px]">
-      <Background className="w-8/12 flex flex-col h-full gap-6 p-6 bg-white rounded-lg shadow-lg">
+    <div className="flex flex-row h-svh bg-white">
+      <Background className="w-8/12 flex flex-col h-full gap-6 p-6 bg-white items-stretch">
         <div className="flex flex-row justify-start w-full mb-4">
           <span className="topic text-2xl font-bold text-[#274C77]">
             My Account
@@ -100,7 +100,7 @@ function MyAccount() {
           </div>
         </form>
       </Background>
-      <Background className="w-4/12 flex flex-col h-vah gap-6 p-6 bg-white rounded-lg shadow-lg">
+      <Background className="w-4/12 flex flex-col h-vah gap-6 p-6 bg-white shadow-inner">
         <div className="flex flex-row justify-start w-full mb-4">
           <span className="topic text-2xl font-bold text-[#274C77]">
             Change Password

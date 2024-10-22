@@ -72,10 +72,12 @@ function NewCar({ showMyListings }) {
   };
 
   return (
-    <Background className="flex flex-col justify-center items-center w-8/12 gap-2 h-full">
+    <Background className="flex flex-col justify-start items-center w-8/12 gap-2 h-svh p-6">
       <div className="flex flex-col items-start justify-center w-full p-4">
         <div className="flex flex-row justify-between w-full p-1">
-          <span className="topic">List Your Car</span>
+          <span className="topic text-2xl font-bold text-[#274C77]">
+            List Your Car
+          </span>
           <button
             className="px-2 py-1 bg-[#274C77] rounded-[5px]"
             onClick={showMyListings}
