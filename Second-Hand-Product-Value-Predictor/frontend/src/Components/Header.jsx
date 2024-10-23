@@ -24,11 +24,11 @@ const Header = ({ onAuthentication, onLogout }) => {
 
       {/* Authentication Section */}
       <div className="space-x-3 flex items-center">
-        {onAuthentication ? (
+        {localStorage.getItem("id") ? (
           <>
             {/* My Account Link */}
             <Link
-              to="/myaccount"
+              to="/dashboard/myaccount"
               className="text-gray-600 text-sm hover:text-black"
             >
               My Account

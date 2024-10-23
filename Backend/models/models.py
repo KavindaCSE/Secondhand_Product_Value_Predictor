@@ -8,27 +8,28 @@ class NewUser(BaseModel):
     id : int
     fullname:str
     email:str 
+    contactNo : str
     password:str 
 
 class User(BaseModel):
     id : int
     fullname:str
+    contactNo : str
     email:str   
 
 
 class Vehicle(BaseModel):
-    year:str
-    manufacturer:str
-    model:str
-    condition:str
-    fuel:str
-    odometer: int
-    title_status:str
-    transmission:str
-    type:str
-    age: int
-    userid:int
-    price:str
+    brand : str
+    model : str
+    year : str
+    transmission : str
+    odometer : int
+    fuel : str
+    type : str
+    image : str
+    price : str
+    sellerId : int
+    sold : bool
 
 class Prediction(BaseModel):
     year: int
@@ -45,6 +46,12 @@ class Prediction(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class NewPassword(BaseModel):
+    id : int
+    currentPassword : str
+    newPassword : str
+    confirmPassword :str
 
 
     

@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios";
 import Background from "../Components/Background";
 import AdvertisementBrowser from "../Components/AdvertisementBrowser";
 import ContactSeller from "../Components/ContactSeller";
-import AdvertisementData from "../Data/AdvertisementData";
+// import AdvertisementData from "../Data/AdvertisementData";
 
 function BrowseCars() {
-  const [listOfCars, setListOfCars] = useState(AdvertisementData); // Using AdvertisementData for initial data
+  const [listOfCars, setListOfCars] = useState([]); // Using AdvertisementData for initial data
   const [sellerData, setSellerData] = useState(null); // No seller data initially
   const [isModalVisible, setIsModalVisible] = useState(false); // Modal visibility state
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const [itemsPerPage, setItemsPerPage] = useState(5); // Items per page
   const [searchTerm, setSearchTerm] = useState(""); // Search term state
+
+
+  useEffect(() => {
+    // Fetch the list of cars from the API
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/vehicles");
+        console.log(response.data)
+        setListOfCars(response.data); // Assuming response contains car data
+      } catch (error) {
+        console.error("Error fetching the car list:", error);
+      }
+    };
+
+    fetchCars();
+  }, []);
 
   // Filter the cars based on the search term and sold status
   const filteredCars = listOfCars.filter(
@@ -46,12 +63,14 @@ function BrowseCars() {
   };
 
   // Fetch seller data and show the modal
-  const fetchSeller = async (sellerDetails) => {
+  const fetchSeller = async (sellerId) => {
     // Simulated fetching of seller data
+    const response = await axios.get(`http://127.0.0.1:8000/get_user/${sellerId}`)
+
     const sellerData = {
-      name: sellerDetails.name,
-      contact: sellerDetails.contact,
-      email: sellerDetails.email,
+      name: response.data.fullname,
+      contact: response.data.contactNo,
+      email: response.data.email,
     };
     setSellerData(sellerData);
     setIsModalVisible(true); // Show the modal when fetching seller data
@@ -108,12 +127,13 @@ function BrowseCars() {
                 brand={ad.brand}
                 model={ad.model}
                 year={ad.year}
+                transmission={ad.transmission}
+                odometer={ad.odometer}
                 price={ad.price}
-                location={ad.location}
-                mileage={ad.mileage}
                 fuel={ad.fuel}
                 image={ad.image}
-                onSellerDetails={() => fetchSeller(ad.sellerDetails)}
+                sellerId={ad.sellerId}
+                onSellerDetails={(sellerId) => fetchSeller(sellerId)}
               />
             ))
           ) : (

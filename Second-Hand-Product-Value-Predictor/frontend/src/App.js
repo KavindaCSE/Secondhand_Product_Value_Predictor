@@ -25,8 +25,10 @@ function App() {
   };
 
   const handleLogout = () => {
+    localStorage.clear();
     setIsLogged(false);
-  };
+    location.assign = '/';
+};
 
   return (
     <>

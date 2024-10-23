@@ -7,8 +7,8 @@ export default function AdvertisementListing({
   model,
   year,
   price,
-  location,
-  mileage,
+  transmission,
+  odometer,
   fuel,
   image,
   sold: initialSold,
@@ -45,7 +45,7 @@ export default function AdvertisementListing({
 
         <div className="details">
           <div className="car-name">{`${year} ${brand} ${model}`}</div>
-          <p className="car-features">{`${mileage} | ${fuel} | ${location}`}</p>
+          <p className="car-features">{`${odometer} | ${fuel} | ${transmission}`}</p>
           <div className="car-price">${price}</div>
         </div>
 

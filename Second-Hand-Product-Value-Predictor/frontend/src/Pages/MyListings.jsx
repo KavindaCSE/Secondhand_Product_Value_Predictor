@@ -1,14 +1,37 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Background from "../Components/Background";
 import NewCar from "../Components/NewCar";
+import axios from "axios";
 import AdvertisementListing from "../Components/AdvertisementListing";
 import AdvertisementData from "../Data/AdvertisementData";
 
 function MyListings() {
   const [showNewCar, setShowNewCar] = useState(false);
+  let sellerId = localStorage.getItem("id");
+  const [currentAds , setCurrentAds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const [itemsPerPage, setItemsPerPage] = useState(5); // Items per page
   const [searchTerm, setSearchTerm] = useState(""); // Search term state
+  const [sellar , setSellar] = useState({"fullname":"","email":"","contactNo":""}) ; 
+
+  
+  useEffect(() => {
+    // Fetch the list of cars from the API
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/get-vehicles-sellerId/${sellerId}`);
+        setCurrentAds(response.data); // Assuming response contains car data
+
+        const details = await axios.get(`http://127.0.0.1:8000/get_user/${sellerId}`)
+        setSellar(details.data);
+      } catch (error) {
+        console.error("Error fetching the car list:", error);
+      }
+    };
+
+    fetchCars();
+  }, []);
+
 
   const totalPages = Math.ceil(AdvertisementData.length / itemsPerPage);
 
@@ -50,8 +73,6 @@ function MyListings() {
     );
   });
 
-  // Get current ads based on pagination
-  const currentAds = filteredAds.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="flex flex-row justify-center items-start w-full h-full gap-5">
@@ -108,9 +129,9 @@ function MyListings() {
                     brand={ad.brand}
                     model={ad.model}
                     year={ad.year}
+                    transmission={ad.transmission}
+                    odometer={ad.odometer}
                     price={ad.price}
-                    location={ad.location}
-                    mileage={ad.mileage}
                     fuel={ad.fuel}
                     image={ad.image}
                     sold={ad.sold}
@@ -162,13 +183,13 @@ function MyListings() {
                   </div>
                   <div className="flex flex-col items-start gap-2">
                     <span className="font-semibold">
-                      Name: Verosha Kriyanjala
+                      Name: {sellar.fullname}
                     </span>
                     <span className="font-semibold">
-                      e-mail: veroshakriyanjala32@gmail.com
+                      e-mail: {sellar.email}
                     </span>
                     <span className="font-semibold">
-                      phone number: +94 70 127 2099
+                      phone number: {sellar.contactNo}
                     </span>
                   </div>
                 </Background>

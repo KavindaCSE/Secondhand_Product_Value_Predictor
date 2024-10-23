@@ -94,26 +94,37 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
+import {jwtDecode} from 'jwt-decode'; 
 
 const Login = () => {
+  const [userData , setUserData] = useState({"email" : "" , "password" : ""})
   const [showPassword, setShowPassword] = useState(false);
   const [isLogged, setIsLogged] = useState(false); // Local login state
 
-  // useEffect(() => {
-  //   // Disable scrolling on the body when the component is mounted
-  //   document.body.style.overflow = "hidden";
 
-  //   // Re-enable scrolling when the component is unmounted
-  //   return () => {
-  //     document.body.style.overflow = "auto";
-  //   };
-  // }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLogged(true);
-    alert("Logged in successfully!");
+    let respond = await axios.post("http://127.0.0.1:8000/login",userData)
+    if (respond.data == "Invalid password"){
+      alert("Login failed! Please try again.")
+    }else{
+      const decodedToken = jwtDecode(respond.data.access_token);
+      setIsLogged(true);
+      localStorage.setItem('id', decodedToken.sub);
+      alert("Logged in successfully!");
+      window.location = '/';
+    }
   };
+
+  const handleChange = (e) => {
+    const {name , value} = e.target;
+    setUserData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-50">
@@ -130,9 +141,10 @@ const Login = () => {
                 Email Address
               </label>
               <input
-                type="email"
-                id="email"
+                type="text"
                 name="email"
+                value={userData.email}
+                onChange={handleChange}
                 required
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#274C77]"
               />
@@ -147,8 +159,9 @@ const Login = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  id="password"
                   name="password"
+                  value={userData.password}
+                  onChange={handleChange}
                   required
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#274C77]"
                 />

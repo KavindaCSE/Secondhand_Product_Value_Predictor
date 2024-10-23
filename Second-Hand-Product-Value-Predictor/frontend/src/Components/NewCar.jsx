@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Background from "./Background";
 import Data from "../Data/labelmapping";
 import brand_to_model from "../Data/brand_to_model.json";
+import axios from 'axios';
+
 
 function NewCar({ showMyListings }) {
   const [formData, setFormData] = useState({
@@ -12,9 +14,10 @@ function NewCar({ showMyListings }) {
     odometer: "",
     fuel: "",
     type: "",
-    image: null,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9pE1unAgfEwRJT9oLvHfrm_JnSerVBwOLPg&s",
     price: "",
-    sellerId: "",
+    sellerId: localStorage.getItem("id"),
+    sold : false
   });
 
   const [manuModels, setManuModels] = useState([]);
@@ -24,38 +27,35 @@ function NewCar({ showMyListings }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+  
+    let updatedFormData = { ...formData, [name]: value };
+  
+    // Handle specific cases for brand, year, and odometer
     if (name === "brand") {
       if (value !== "") {
         setUnDisableModel(true);
-        setManuModels(brand_to_model[value]);
+        setManuModels(brand_to_model[Data.manufacturer[value]]);
       } else {
         setUnDisableModel(false);
         setManuModels([]);
       }
-      setFormData({ ...formData, brand: value, model: "" });
-    } else if (name === "year") {
-      let year = parseInt(value) + 2000;
-      const today = new Date();
-      const currentYear = today.getFullYear();
-      const calculatedAge = currentYear - year;
-      setFormData({
-        ...formData,
-        year: value,
-        age: calculatedAge >= 0 ? calculatedAge : "",
-      });
+      updatedFormData = { ...updatedFormData, brand: value, model: "" };
     } else if (name === "odometer") {
       const intValue = parseInt(value, 10);
       if (!isNaN(intValue)) {
-        setFormData({ ...formData, odometer: intValue });
+        updatedFormData = { ...updatedFormData, odometer: intValue };
       }
-    } else {
-      setFormData({ ...formData, [name]: value });
     }
-
-    const isFormComplete = Object.values(formData).every((item) => item !== "");
+  
+    setFormData(updatedFormData);
+  
+    // Validate the form after updating the formData
+    const isFormComplete = Object.values(updatedFormData).every(
+      (item) => item !== ""
+    );
     setIsFormValid(isFormComplete);
   };
+  
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -65,9 +65,10 @@ function NewCar({ showMyListings }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(formData);
+    await axios.post("http://127.0.0.1:8000/add-vehicles",formData);
+    window.location.reload()
   };
 
   return (
@@ -117,7 +118,7 @@ function NewCar({ showMyListings }) {
               >
                 <option value="">Select Brand</option>
                 {Object.keys(Data.manufacturer).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))}
@@ -150,7 +151,7 @@ function NewCar({ showMyListings }) {
               >
                 <option value="">Select Year</option>
                 {Object.keys(Data.year).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))}
@@ -166,7 +167,7 @@ function NewCar({ showMyListings }) {
               >
                 <option value="">Select Fuel</option>
                 {Object.keys(Data.fuel).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))}
@@ -182,7 +183,7 @@ function NewCar({ showMyListings }) {
               >
                 <option value="">Select Transmission</option>
                 {Object.keys(Data.transmission).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))}
@@ -198,7 +199,7 @@ function NewCar({ showMyListings }) {
               >
                 <option value="">Select Type</option>
                 {Object.keys(Data.type).map((item, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))}
