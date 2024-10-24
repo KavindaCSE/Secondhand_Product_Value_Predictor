@@ -3,17 +3,18 @@ import axios from "axios";
 import Background from "../Components/Background";
 import AdvertisementBrowser from "../Components/AdvertisementBrowser";
 import ContactSeller from "../Components/ContactSeller";
-// import AdvertisementData from "../Data/AdvertisementData";
+
 
 function BrowseCars() {
-  const [listOfCars, setListOfCars] = useState([]); // Using AdvertisementData for initial data
+  const [listOfCars, setListOfCars] = useState([]);// Using AdvertisementData for initial data
   const [sellerData, setSellerData] = useState(null); // No seller data initially
   const [isModalVisible, setIsModalVisible] = useState(false); // Modal visibility state
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const [itemsPerPage, setItemsPerPage] = useState(5); // Items per page
   const [searchTerm, setSearchTerm] = useState(""); // Search term state
+  const [pageRange, setPageRange] = useState({ start: 0, end: 10 }); // State for pagination range
 
-
+  
   useEffect(() => {
     // Fetch the list of cars from the API
     const fetchCars = async () => {
@@ -28,7 +29,8 @@ function BrowseCars() {
 
     fetchCars();
   }, []);
-
+  
+  
   // Filter the cars based on the search term and sold status
   const filteredCars = listOfCars.filter(
     (car) =>
@@ -45,6 +47,8 @@ function BrowseCars() {
   // Get current cars after filtering and pagination
   const currentCars = filteredCars.slice(indexOfFirstItem, indexOfLastItem);
 
+  const totalPages = Math.ceil(filteredCars.length / itemsPerPage);
+
   // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -54,12 +58,14 @@ function BrowseCars() {
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
     setCurrentPage(1); // Reset to the first page when items per page change
+    setPageRange({ start: 0, end: 10 }); // Reset page range
   };
 
   // Handle search input change
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Reset to the first page when search term changes
+    setPageRange({ start: 0, end: 10 }); // Reset page range
   };
 
   // Fetch seller data and show the modal
@@ -78,6 +84,26 @@ function BrowseCars() {
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
+  };
+
+  // Handle "Next" button click for pagination
+  const handleNextPageRange = () => {
+    if (pageRange.end < totalPages) {
+      setPageRange((prevRange) => ({
+        start: prevRange.start + 10,
+        end: Math.min(prevRange.end + 10, totalPages),
+      }));
+    }
+  };
+
+  // Handle "Previous" button click for pagination
+  const handlePreviousPageRange = () => {
+    if (pageRange.start > 0) {
+      setPageRange((prevRange) => ({
+        start: prevRange.start - 10,
+        end: prevRange.start,
+      }));
+    }
   };
 
   return (
@@ -143,21 +169,37 @@ function BrowseCars() {
 
         {/* Pagination controls */}
         <div className="flex justify-center items-center mt-4">
+          {pageRange.start > 0 && (
+            <button
+              onClick={handlePreviousPageRange}
+              className="px-3 py-1 mx-1 bg-gray-300 rounded-md"
+            >
+              Previous
+            </button>
+          )}
           {Array.from(
-            { length: Math.ceil(filteredCars.length / itemsPerPage) },
+            { length: Math.min(totalPages, pageRange.end) - pageRange.start },
             (_, index) => (
               <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
+                key={pageRange.start + index}
+                onClick={() => handlePageChange(pageRange.start + index + 1)}
                 className={`px-3 py-1 mx-1 ${
-                  currentPage === index + 1
+                  currentPage === pageRange.start + index + 1
                     ? "bg-[#274C77] text-white"
                     : "bg-gray-200 text-black"
                 } rounded-md`}
               >
-                {index + 1}
+                {pageRange.start + index + 1}
               </button>
             )
+          )}
+          {pageRange.end < totalPages && (
+            <button
+              onClick={handleNextPageRange}
+              className="px-3 py-1 mx-1 bg-gray-300 rounded-md"
+            >
+              Next
+            </button>
           )}
         </div>
       </Background>

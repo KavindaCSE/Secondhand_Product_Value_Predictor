@@ -79,21 +79,6 @@ function MyAccount() {
               className="rounded-full object-cover"
             />
           </div>
-          <div className="flex flex-col">
-            <label
-              htmlFor="profile-pic"
-              className="bg-[#274C77] text-white p-2 rounded-md cursor-pointer hover:bg-[#1d3a5a] transition-colors"
-            >
-              Change Profile Picture
-            </label>
-            <input
-              type="file"
-              id="profile-pic"
-              className="hidden"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </div>
         </div>
 
         <form className="flex flex-col w-full gap-4 mt-6" onSubmit={handleSubmit}>
