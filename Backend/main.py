@@ -107,7 +107,7 @@ async def add_vehicle(vehicle:Vehicle):
 @app.get('/vehicles',tags=["vehicles"])
 async def get_vehicle():
     vehicles = []
-    vehicles_cursor = database["vehicle"].find()
+    vehicles_cursor = database["vehicle"].find().limit(30)
     for  vehicle in vehicles_cursor:
         vehicles.append(Vehicle(**vehicle))
 
