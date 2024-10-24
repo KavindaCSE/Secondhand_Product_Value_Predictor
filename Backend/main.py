@@ -105,13 +105,15 @@ async def add_vehicle(vehicle:Vehicle):
     
 
 @app.get('/vehicles',tags=["vehicles"])
-async def get_vehicle():
-    vehicles = []
-    vehicles_cursor = database["vehicle"].find().limit(30)
-    for  vehicle in vehicles_cursor:
-        vehicles.append(Vehicle(**vehicle))
-
+async def get_vehicle():    
+    vehicles = []    
+    vehicles_cursor = database["vehicle"].find()    
+    
+    for  vehicle in vehicles_cursor:        
+        vehicles.append(Vehicle(**vehicle))    
+        
     return vehicles
+
 
 @app.get('/get-vehicles-sellerId/{id}',tags=["vehicles"])
 async def get_vehicle_by_user_id(id:int):
