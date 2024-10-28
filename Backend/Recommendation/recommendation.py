@@ -1,9 +1,9 @@
 import pickle
 
-with open('./simialarity.pkl','rb') as f:
+with open('./Recommendation/simialarity.pkl','rb') as f:
     similarity = pickle.load(f)
 
-with open('./vehicle_list.pkl','rb') as f:
+with open('./Recommendation/vehicle_list.pkl','rb') as f:
     new_data = pickle.load(f)
 
 
@@ -26,7 +26,7 @@ def recommand(brand, year):
         return "No match found for vehicle"
     
 
-
+    
 
 
 

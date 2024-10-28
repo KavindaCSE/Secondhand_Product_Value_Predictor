@@ -61,11 +61,24 @@ function NewCar({ showMyListings }) {
     setIsFormValid(isFormComplete);
 
     if (updatedFormData.brand && updatedFormData.year) {
-      setShowRecommendations(true);
-      const recommendation = (brand , year) => {
+
+      const recommendation = async (brand_of_car, year_of_car) => {
+        const recommendation_details = { model: brand_of_car, year: year_of_car };
         
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/recommendation", recommendation_details);
+            
+            if (response.data !== "No match found for vehicle") {
+                setRecommendation(response.data);
+                console.log(response.data)
+            }
+        } catch (error) {
+            console.error("Error fetching recommendation:", error);
+        }
       }
-    } else {
+      recommendation(updatedFormData.brand, updatedFormData.year);
+      setShowRecommendations(true);
+    }else {
       setShowRecommendations(false);
     }
   };
