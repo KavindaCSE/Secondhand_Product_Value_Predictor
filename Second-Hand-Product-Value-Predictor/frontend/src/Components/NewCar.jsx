@@ -26,6 +26,7 @@ function NewCar({ showMyListings }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [isBasicInfoFilled, setIsBasicInfoFilled] = useState(false); // Track if basic fields are filled
+  const [recommendation, setRecommendation] = useState([]);
 
   useEffect(() => {
     // Check if brand, model, and year are filled to enable other fields
@@ -61,6 +62,9 @@ function NewCar({ showMyListings }) {
 
     if (updatedFormData.brand && updatedFormData.year) {
       setShowRecommendations(true);
+      const recommendation = (brand , year) => {
+        
+      }
     } else {
       setShowRecommendations(false);
     }
