@@ -3,6 +3,7 @@ import Background from "./Background";
 import Data from "../Data/labelmappingsForNewcar";
 import brand_to_model from "../Data/brand_to_model.json";
 import axios from "axios";
+import AdvertisementListing from "./AdvertisementListing";
 
 function NewCar({ showMyListings }) {
   const [formData, setFormData] = useState({
@@ -288,6 +289,26 @@ function NewCar({ showMyListings }) {
               <span className="topic text-2xl font-bold text-[#274C77]">
                 Recommendations
               </span>
+            </div>
+            <div className="w-full grid grid-cols-5 gap-3">
+              {recommendation.length > 0 ? (
+                recommendation.map((ad, index) => (
+                  <AdvertisementListing
+                    key={index}
+                    brand={ad.brand}
+                    model={ad.model}
+                    year={ad.year}
+                    transmission={ad.transmission}
+                    odometer={ad.odometer}
+                    price={ad.price}
+                    fuel={ad.fuel}
+                    image={ad.image}
+                    sold={ad.sold}
+                  />
+                ))
+              ) : (
+                <div className="col-span-5 text-center">No recommendations</div>
+              )}
             </div>
           </div>
         )}
